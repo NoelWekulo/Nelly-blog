@@ -1,3 +1,8 @@
 from django.contrib import admin
+from HealthApp.models import BlogCategory, Blog, Comment
 
-# Register your models here.
+admin.site.register(BlogCategory)
+admin.site.register(Blog)
+admin.site.register(Comment)
+
+

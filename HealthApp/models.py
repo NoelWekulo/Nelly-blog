@@ -28,4 +28,13 @@ class Blog(models.Model):
     def __str__(self):
         return f"{self.title} by {self.author}"
     
-
+class Comment(models.Model):
+    full_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    website = models.URLField(blank=True, null=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='blog')
+    added_at = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+    
+    def __str__(self):
+        return f"{self.full_name} commented on {self.blog.title}"

@@ -14,8 +14,10 @@ def services(request):
 
 def blog(request):
     blogs = Blog.objects.all().order_by('-date_posted')
+    categories = BlogCategory.objects.all()
     context = {
-        'blogs': blogs
+        'blogs': blogs,
+        'categories' : categories,
     }
     return render(request, 'blog.html', context)
 

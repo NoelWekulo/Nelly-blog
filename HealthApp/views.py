@@ -15,9 +15,20 @@ def services(request):
 def blog(request):
     blogs = Blog.objects.all().order_by('-date_posted')
     categories = BlogCategory.objects.all()
+    
+    # Get category-specific blogs
+    category_blogs = {}
+    for category in categories:
+        category_blogs[category] = blogs.filter(category=category)[:6]
+        
+    print(category_blogs)
+    
     context = {
         'blogs': blogs,
-        'categories' : categories,
+        'categories': categories,
+        'category_blogs': category_blogs,
+        'featured_blogs': blogs[:5],
+        'recent_blogs': blogs[:8],
     }
     return render(request, 'blog.html', context)
 
@@ -48,7 +59,7 @@ def single(request, slug):
             comment = form.save(commit=False)
             comment.blog = blog
             comment.save()
-            return redirect('blog_detail', slug=slug)
+            return redirect('HealthApp:blog_detail', slug=slug)
     
     comments = Comment.objects.filter(blog=blog).order_by('-added_at')
     context = {

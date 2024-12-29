@@ -18,6 +18,6 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('search_result/', views.search_result, name='search_result'),
     path('shop/', views.shop, name='shop'),
-    path('blog-detail/<slug>/', views.single, name='blog-detail'),
+    path('blog-detail/<str:slug>/', views.single, name='blog_detail'),
     path('thankyou/', views.thankyou, name='thankyou'),
 ]

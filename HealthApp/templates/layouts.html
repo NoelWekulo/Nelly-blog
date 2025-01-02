@@ -118,39 +118,20 @@
                             <h3 class="mb-4">Recent Post Entry</h3>
                             <div class="post-entry-footer">
                                 <ul>
-                                    <li>
-                                        <a href="">
-                                            <img src="{% static 'blogassets/images/img_1_sq.jpg' %}" alt="Image placeholder" class="me-4 rounded">
-                                            <div class="text">
-                                                <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                                <div class="post-meta">
-                                                    <span class="mr-2">March 15, 2018 </span>
+                                    {% for blog in recent_blogs|slice:":4" %}
+                                        <li>
+                                            <a href="{% url 'HealthApp:blog_detail' blog.slug %}">
+                                                <img src="{{blog.image.url}}" alt="Image placeholder" class="me-4 rounded">
+                                                <div class="text">
+                                                    <h4>{{blog.title}}</h4>
+                                                    <div class="post-meta">
+                                                        <span class="mr-2">{{ blog.date_posted|date:"M. jS, Y" }} </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <img src="{% static 'blogassets/images/img_2_sq.jpg' %}" alt="Image placeholder" class="me-4 rounded">
-                                            <div class="text">
-                                                <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                                <div class="post-meta">
-                                                    <span class="mr-2">March 15, 2018 </span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <img src="{% static 'blogassets/images/img_3_sq.jpg' %}" alt="Image placeholder" class="me-4 rounded">
-                                            <div class="text">
-                                                <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                                <div class="post-meta">
-                                                    <span class="mr-2">March 15, 2018 </span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    
                                 </ul>
                             </div>
     

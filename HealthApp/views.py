@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from HealthApp.models import BlogCategory, Blog, Comment
+from HealthApp.forms import CommentForm
 
 # Create your views here.
 
@@ -11,7 +13,24 @@ def services(request):
     return render(request, 'services.html')
 
 def blog(request):
-    return render(request, 'blog.html')
+    blogs = Blog.objects.all().order_by('-date_posted')
+    categories = BlogCategory.objects.all()
+    
+    # Get category-specific blogs
+    category_blogs = {}
+    for category in categories:
+        category_blogs[category] = blogs.filter(category=category)[:6]
+        
+    print(category_blogs)
+    
+    context = {
+        'blogs': blogs,
+        'categories': categories,
+        'category_blogs': category_blogs,
+        'featured_blogs': blogs[:5],
+        'recent_blogs': blogs[:8],
+    }
+    return render(request, 'blog.html', context)
 
 def cart(request):
     return render(request, 'cart.html')
@@ -31,8 +50,24 @@ def search_result(request):
 def shop(request):
     return render(request, 'shop.html')
 
-def single(request):
-    return render(request, 'single.html')
+def single(request, slug):
+    blog = Blog.objects.get(slug=slug)
+    # Handle comment submission
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.blog = blog
+            comment.save()
+            return redirect('HealthApp:blog_detail', slug=slug)
+    
+    comments = Comment.objects.filter(blog=blog).order_by('-added_at')
+    context = {
+        'blog': blog,
+        'comments': comments,
+        'form': CommentForm()
+    }
+    return render(request, 'single.html', context)
 
 def thankyou(request):
     return render(request, 'thankyou.html')
